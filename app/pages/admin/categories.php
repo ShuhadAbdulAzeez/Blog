@@ -109,7 +109,7 @@
           $limit = 10;
           $offset = ($PAGE['page_number'] - 1) * $limit;
 
-          $query = "SELECT * FROM categories ORDER BY id DESC limit $limit offset $offset";
+          $query = "SELECT * FROM categories ORDER BY id DESC limit $limit  offset $offset";
           $rows = query($query);
         ?>
 

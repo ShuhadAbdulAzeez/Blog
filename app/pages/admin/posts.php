@@ -1,7 +1,7 @@
 <?php if ($action == 'add'):?>
   <div class="col-md-6 mx-auto">
       <form method="POST" enctype="multipart/form-data">
-        <h2 class="col-md-6 mx-auto">Create Account</h2>
+        <h2 class="col-md-6 mx-auto">Create Post</h2>
 
         <div class="mb-3">
             Featured Image:<br>

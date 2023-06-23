@@ -1,16 +1,15 @@
 <?php
 
-function query(string $query, array $params = []) 
+function query(string $query, array $params = [])
 {
-    $string = "mysql:host=".DBHOST.";dbname=". DBNAME;
+    $string = "mysql:host=".DBHOST.";dbname=".DBNAME;
     $con = new PDO($string, DBUSER, DBPASS);
 
     $stm = $con->prepare($query);
     $stm->execute($params);
 
     $result = $stm->fetchAll(PDO::FETCH_ASSOC);
-    if (is_array($result) && !empty($result)) 
-    {
+    if (is_array($result) && !empty($result)) {
         return $result;
     }
     return false;
@@ -120,6 +119,32 @@ function logged_in()
     return false;
 }
 
+function post_comment($post_id)
+{
+    if (isset($_POST['comment']) && $_POST['comment'] !== '') {
+        // Retrieve the comment and name from the form submission
+        $comment = $_POST['comment'];
+        $name = $_POST['name'];
+
+        // Perform necessary validation and sanitization on the comment and name data
+
+        // Create a PDO connection using your database connection details
+        $string = "mysql:host=".DBHOST.";dbname=".DBNAME;
+        $con = new PDO($string, DBUSER, DBPASS);
+        $con->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        // Insert the comment and name into the database
+        $query = "INSERT INTO comments (post_id, comment, name) VALUES (:post_id, :comment, :name)";
+        $stmt = $con->prepare($query);
+        $stmt->bindParam(':post_id', $post_id, PDO::PARAM_INT);
+        $stmt->bindParam(':comment', $comment, PDO::PARAM_STR);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->execute();
+
+        // Provide feedback to the user indicating the success or failure of the comment submission
+    }
+}
+
 /** set pagination vars **/
 function get_pagination_vars()
 {
@@ -166,7 +191,7 @@ function get_pagination_vars()
 }
 
 //create_tables();
-function create_tables() 
+function create_tables()
 {
     $string = "mysql:host=".DBHOST.";";
     $con = new PDO($string, DBUSER, DBPASS);
@@ -181,7 +206,6 @@ function create_tables()
 
     /** users table **/ 
     $query = "create table if not exists users(
-
         id int primary key auto_increment,
         username varchar(50) not null,
         email varchar(100) not null,
@@ -189,33 +213,26 @@ function create_tables()
         image varchar(1024) null,
         date datetime default current_timestamp,
         role varchar(10) not null,
-
         key username (username),
         key email (email)
-
     )";
     $stm = $con->prepare($query);
     $stm->execute();
 
     /** category table **/ 
     $query = "create table if not exists categories(
-
         id int primary key auto_increment,
         category varchar(50) not null,
         slug varchar(100) not null,
         disabled tinyint default 0,
-
         key slug (slug),
         key category (category)
-
     )";
     $stm = $con->prepare($query);
     $stm->execute();
 
-
     /** posts table **/ 
     $query = "create table if not exists posts(
-
         id int primary key auto_increment,
         user_id int ,
         category_id int ,
@@ -224,18 +241,33 @@ function create_tables()
         image varchar(1024) null,
         date datetime default current_timestamp,
         slug varchar(100) not null,
-
         key user_id (user_id),
         key category_id (category_id),
         key title (title),
         key slug (slug),
         key date (date)
-
     )";
     $stm = $con->prepare($query);
     $stm->execute();
 
+    /** comments table **/
+    $query = "create table if not exists comments(
+        id int primary key auto_increment,
+        post_id int,
+        name varchar(50) not null,
+        comment text not null,
+        approved tinyint default 0,
+        created_at datetime default current_timestamp,
+        foreign key (post_id) references posts(id) on delete cascade,
+        key approved (approved),
+        key created_at (created_at)
+    )";
+    $stm = $con->prepare($query);
+    $stm->execute();
 }
+
+create_tables();
+
 
 function resize_image($filename,  $max_size = 1000)
 {
@@ -293,7 +325,7 @@ function resize_image($filename,  $max_size = 1000)
                 imagepng($image2, $filename, 90);
                 break;
             case 'image/gif':
-                imagegif($image2, $filenam, 90);
+                imagegif($image2, $filename, 90);
                 break;
             case 'image/webp':
                 imagewebp($image2, $filename, 90);

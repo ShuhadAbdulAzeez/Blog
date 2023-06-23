@@ -54,4 +54,18 @@
         ?>
         <h1 class="text-primary"><?=$res['num'] ?? 0?></h1>
     </div>
+
+    <div class="m-1 col-md-4 bg-light rounded shadow border tect-center">
+        <h1><i class="bi bi-person-video3"></i></h1>
+        <div>
+            Comments
+        </div>
+        <?php 
+            
+            $query = "select count(id) as num from comments";
+            $res = query_row($query);
+
+        ?>
+        <h1 class="text-primary"><?=$res['num'] ?? 0?></h1>
+    </div>
 </div>
