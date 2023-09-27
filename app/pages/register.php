@@ -90,19 +90,91 @@ if (!empty($_POST)) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register</title>
+  <title>Registration</title>
   <link rel="stylesheet" href="<?= ROOT ?>./assets/css/login.css">
+  <style>
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .form-container h2 {
+      font-size: 24px;
+      color: #333;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="checkbox"] {
+      width: 90%;
+      padding: 10px;
+      margin: 10px auto; /* Center the input fields horizontally */
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    label {
+      display: flex;
+      text-align: left;
+      margin-top: 10px;
+    }
+
+   
+
+    button[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    .form-message {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .form-message a {
+      text-decoration: none;
+      color: #007bff;
+    }
+  </style>
 </head>
-<style>
-  .error {
-    color: red;
-  }
-</style>
 <body>
   <div class="container">
     <div class="form-container">
       <form method="POST">
-        <h2>Register</h2>
+        <h2>REGISTER</h2>
 
         <input value="<?= isset($username) ? htmlspecialchars($username) : '' ?>" type="text" name="username" placeholder="Username">
         <?php if (!empty($errors['username'])) : ?>
@@ -124,11 +196,12 @@ if (!empty($_POST)) {
           <p class="error"><?= $errors['confirm_password'] ?></p>
         <?php endif; ?>
 
-        <label for="terms">I agree to the terms and conditions:</label>
+        <label for="terms">I agree to the terms and conditions:
         <input <?= isset($terms) && $terms ? 'checked' : '' ?> type="checkbox" id="terms" name="terms">
         <?php if (!empty($errors['terms'])) : ?>
           <p class="error"><?= $errors['terms'] ?></p>
         <?php endif; ?>
+        </label>
 
         <button type="submit">Register</button>
         <p class="form-message">Already have an account? <a href="login">Login</a></p>
@@ -137,5 +210,6 @@ if (!empty($_POST)) {
   </div>
 </body>
 </html>
+
 
 

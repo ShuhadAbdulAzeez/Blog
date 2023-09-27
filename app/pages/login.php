@@ -38,23 +38,85 @@ if (!empty($_POST)) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login</title>
   <link rel="stylesheet" href="<?=ROOT?>/assets/css/login.css">
+  <style>
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      padding: 20px;
+      text-align: center;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .form-container h2 {
+      font-size: 24px;
+      color: #333;
+    }
+
+    .error {
+      color: red;
+      margin-top: 10px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 90%;
+      padding: 10px;
+      margin: 10px auto; /* Center the input fields horizontally */
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+
+    .form-message {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .form-message a {
+      text-decoration: none;
+      color: #007bff;
+    }
+  </style>
 </head>
-<style>
-  .error {
-    color: red;
-  }
-</style>
 <body>
   <div class="container">
     <div class="form-container">
       <form method="POST">
-        <h2>Login</h2>
-        <?php if (!empty($errors['email'])):?>
-          <p class="error"><?=$errors['email']?></p>
-        <?php endif;?>
+        <h2>LOGIN</h2>
+        <?php if (!empty($errors['email'])): ?>
+          <p class="error"><?= $errors['email'] ?></p>
+        <?php endif; ?>
 
-        <input value="<?=old_value('email')?>" type="email" name="email" placeholder="Email">
-        <input value="<?=old_value('password')?>" type="password" name="password" placeholder="Password">
+        <input value="<?= old_value('email') ?>" type="email" name="email" placeholder="Email">
+        <input value="<?= old_value('password') ?>" type="password" name="password" placeholder="Password">
         <button type="submit">Login</button>
         <p class="form-message">Don't have an account? <a href="register">Register</a></p>
       </form>
@@ -62,3 +124,4 @@ if (!empty($_POST)) {
   </div>
 </body>
 </html>
+
